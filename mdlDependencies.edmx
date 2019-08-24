@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CIDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="configuration_items">
+          <Key>
+            <PropertyRef Name="name_ci" />
+          </Key>
+          <Property Name="name_ci" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="description_ci" Type="varchar" MaxLength="50" />
+          <Property Name="version_ci" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="dependencies_ci">
+          <Key>
+            <PropertyRef Name="id_dependency" />
+          </Key>
+          <Property Name="id_dependency" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name_ci_father" Type="varchar" MaxLength="30" />
+          <Property Name="name_ci_child" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="fk_ci_child_config_item">
+          <End Role="configuration_items" Type="Self.configuration_items" Multiplicity="0..1" />
+          <End Role="dependencies_ci" Type="Self.dependencies_ci" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="configuration_items">
+              <PropertyRef Name="name_ci" />
+            </Principal>
+            <Dependent Role="dependencies_ci">
+              <PropertyRef Name="name_ci_child" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ci_father_config_item">
+          <End Role="configuration_items" Type="Self.configuration_items" Multiplicity="0..1" />
+          <End Role="dependencies_ci" Type="Self.dependencies_ci" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="configuration_items">
+              <PropertyRef Name="name_ci" />
+            </Principal>
+            <Dependent Role="dependencies_ci">
+              <PropertyRef Name="name_ci_father" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CIDBModelStoreContainer">
+          <EntitySet Name="configuration_items" EntityType="Self.configuration_items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dependencies_ci" EntityType="Self.dependencies_ci" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_ci_child_config_item" Association="Self.fk_ci_child_config_item">
+            <End Role="configuration_items" EntitySet="configuration_items" />
+            <End Role="dependencies_ci" EntitySet="dependencies_ci" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ci_father_config_item" Association="Self.fk_ci_father_config_item">
+            <End Role="configuration_items" EntitySet="configuration_items" />
+            <End Role="dependencies_ci" EntitySet="dependencies_ci" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CIDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="configuration_items">
+          <Key>
+            <PropertyRef Name="name_ci" />
+          </Key>
+          <Property Name="name_ci" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description_ci" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="version_ci" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="dependencies_ci" Relationship="Self.fk_ci_child_config_item" FromRole="configuration_items" ToRole="dependencies_ci" />
+          <NavigationProperty Name="dependencies_ci1" Relationship="Self.fk_ci_father_config_item" FromRole="configuration_items" ToRole="dependencies_ci" />
+        </EntityType>
+        <EntityType Name="dependencies_ci">
+          <Key>
+            <PropertyRef Name="id_dependency" />
+          </Key>
+          <Property Name="id_dependency" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="configuration_items" Relationship="Self.fk_ci_child_config_item" FromRole="dependencies_ci" ToRole="configuration_items" />
+          <NavigationProperty Name="configuration_items1" Relationship="Self.fk_ci_father_config_item" FromRole="dependencies_ci" ToRole="configuration_items" />
+        </EntityType>
+        <Association Name="fk_ci_child_config_item">
+          <End Role="configuration_items" Type="Self.configuration_items" Multiplicity="0..1" />
+          <End Role="dependencies_ci" Type="Self.dependencies_ci" Multiplicity="*" />
+        </Association>
+        <Association Name="fk_ci_father_config_item">
+          <End Role="configuration_items" Type="Self.configuration_items" Multiplicity="0..1" />
+          <End Role="dependencies_ci" Type="Self.dependencies_ci" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="CIDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="configuration_items" EntityType="Self.configuration_items" />
+          <EntitySet Name="dependencies_ci" EntityType="Self.dependencies_ci" />
+          <AssociationSet Name="fk_ci_child_config_item" Association="Self.fk_ci_child_config_item">
+            <End Role="configuration_items" EntitySet="configuration_items" />
+            <End Role="dependencies_ci" EntitySet="dependencies_ci" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ci_father_config_item" Association="Self.fk_ci_father_config_item">
+            <End Role="configuration_items" EntitySet="configuration_items" />
+            <End Role="dependencies_ci" EntitySet="dependencies_ci" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CIDBModelStoreContainer" CdmEntityContainer="CIDBEntities">
+          <EntitySetMapping Name="configuration_items">
+            <EntityTypeMapping TypeName="CIDBModel.configuration_items">
+              <MappingFragment StoreEntitySet="configuration_items">
+                <ScalarProperty Name="name_ci" ColumnName="name_ci" />
+                <ScalarProperty Name="description_ci" ColumnName="description_ci" />
+                <ScalarProperty Name="version_ci" ColumnName="version_ci" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dependencies_ci">
+            <EntityTypeMapping TypeName="CIDBModel.dependencies_ci">
+              <MappingFragment StoreEntitySet="dependencies_ci">
+                <ScalarProperty Name="id_dependency" ColumnName="id_dependency" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="fk_ci_child_config_item" TypeName="CIDBModel.fk_ci_child_config_item" StoreEntitySet="dependencies_ci">
+            <EndProperty Name="configuration_items">
+              <ScalarProperty Name="name_ci" ColumnName="name_ci_child" />
+            </EndProperty>
+            <EndProperty Name="dependencies_ci">
+              <ScalarProperty Name="id_dependency" ColumnName="id_dependency" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="name_ci_child" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="fk_ci_father_config_item" TypeName="CIDBModel.fk_ci_father_config_item" StoreEntitySet="dependencies_ci">
+            <EndProperty Name="configuration_items">
+              <ScalarProperty Name="name_ci" ColumnName="name_ci_father" />
+            </EndProperty>
+            <EndProperty Name="dependencies_ci">
+              <ScalarProperty Name="id_dependency" ColumnName="id_dependency" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="name_ci_father" />
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
