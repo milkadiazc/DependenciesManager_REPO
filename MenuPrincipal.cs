@@ -48,11 +48,13 @@ namespace DependenciesvManagerv2
                         break;
 
                       case 2:
-                        //  CIM.EditCI();
-                          break;
+                        Console.WriteLine("Escriba el nombre del CI que desea editar:");
+                        string ci_name = Console.ReadLine();
+                         CIM.EditCI(ci_name);
+                        break;
 
                       case 3:
-                      //    CIM.DeleteCI();
+                     //     CIM.DeleteCI();
                           break;
 
                       case 4:
