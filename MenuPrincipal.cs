@@ -74,6 +74,7 @@ namespace DependenciesvManagerv2
                          CIM.EditCI(ci_name);
                         break;
 
+
                       case 3:
                      //     CIM.DeleteCI();
                           break;
