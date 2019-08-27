@@ -8,6 +8,25 @@ namespace DependenciesvManagerv2
 {
     class MenuPrincipal
     {
+        /*public void listAll ()
+        {
+
+            List<configuration_items> allItems = CIM.GetAllConfiguratioItems();
+            foreach (configuration_items i in allItems)
+            {
+                Console.WriteLine("------------------------");
+                Console.WriteLine("Nombre del CI: " + i.name_ci);
+                Console.WriteLine("Descripcion: " + i.description_ci);
+                Console.WriteLine("Descripcion: " + i.version_ci);
+                Console.WriteLine("------------------------");
+
+
+
+
+            }
+        }*/
+        
+
         static void Main(string[] args)
         {
 
@@ -45,6 +64,8 @@ namespace DependenciesvManagerv2
                         String complete_version_numbers = major + "." + minor + "." + patch;
 
                         CIM.InsertCI(name, description, complete_version_numbers);
+                        Console.WriteLine();
+                        Console.WriteLine("Configuration item agregado correctamente");
                         break;
 
                       case 2:
@@ -58,27 +79,74 @@ namespace DependenciesvManagerv2
                           break;
 
                       case 4:
-                     //     CIM.ViewCI();
+                        Console.WriteLine("Ingrese el nombre del CI: ");
+                        String nameCi = Console.ReadLine();
+                          configuration_items ci=  CIM.GetConfiguratioItemByName(nameCi);
+
+                        if (ci == null)
+                        {
+                            Console.WriteLine("------------------------");
+                            Console.WriteLine("Nombre inválido");
+                            Console.WriteLine("------------------------");
+                        }
+                        else
+                        {
+                            Console.WriteLine("------------------------");
+                            Console.WriteLine("Nombre del CI: " + ci.name_ci);
+                            Console.WriteLine("Descripcion: " + ci.description_ci);
+                            Console.WriteLine("Descripcion: " + ci.version_ci);
+                            Console.WriteLine("------------------------");
+                        }
                           break;
 
                       case 5:
-                        //  CIM.AddDependencyCI();
-                          break;
+                        Console.WriteLine("Seleccione el configuration item: ");
+                         String CiName = Console.ReadLine();
+                        Console.WriteLine("Selecciona la dependencia: ");
+                        String DepName   = Console.ReadLine();
+                        if (CIM.GetConfiguratioItemByName(CiName)!= null && CIM.GetConfiguratioItemByName(DepName) !=null)
+                        {
+                            CIM.InsertDependency(CiName,DepName);
+                        }
+                     else
+                        {
+                            Console.WriteLine("Nombre inválido");
+                        }
+                        break;
 
                       case 6:
                        //   CIM.DeleteDependencyCI();
                           break;
 
                       case 7:
-                      //    CIM.ViewAllCI();
+                        List<configuration_items> allItems = CIM.GetAllConfiguratioItems();
+                        foreach (configuration_items i in allItems)
+                        {
+                            Console.WriteLine("------------------------");
+                            Console.WriteLine("Nombre del CI: "+i.name_ci);
+                            Console.WriteLine("Descripcion: "+i.description_ci);
+                            Console.WriteLine("Descripcion: " + i.version_ci);
+                            Console.WriteLine("------------------------");
+
+
+
+
+                        }
                           break;
 
                     case 8:
                         System.Environment.Exit(0);
                         break;
+
+                    default:
+                        Console.WriteLine();
+                        Console.WriteLine("------------------------");
+                        Console.WriteLine("Ingrese una opción válida");
+                        Console.WriteLine("------------------------");
+                        break;
                 }
             }
-            Console.Read();
+          
         }
     }
 }

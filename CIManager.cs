@@ -24,10 +24,17 @@ namespace DependenciesvManagerv2
 
         }
 
-        public void DeleteCI(string ci_name1)
+        public List<configuration_items> GetAllConfiguratioItems ()
         {
-           
-           
+            List<configuration_items> itemList = new List<configuration_items>();
+
+            using (CIDBEntities db = new CIDBEntities())
+            {
+                itemList = db.configuration_items.ToList();
+
+            }
+
+                return itemList;
         }
 
         public void EditCI(string ci_name)
@@ -77,6 +84,25 @@ namespace DependenciesvManagerv2
                 cb.SaveChanges();
             }
 
+        }
+
+        public configuration_items GetConfiguratioItemByName(String CiName)
+        {
+            configuration_items ci_ret = null;
+
+            using (CIDBEntities cb = new CIDBEntities())
+            {
+               ci_ret =  cb.configuration_items.Find(CiName);
+            }
+
+            return ci_ret;
+        }
+
+        public void InsertDependency (String ci_father, String ci_child)
+        {
+            CIDBEntities db = new CIDBEntities();
+            db.Database.ExecuteSqlCommand(@"insert into dependencies_ci (name_ci_father,name_ci_child)values({0},{1})",ci_father,ci_child);
+            db.SaveChanges();
         }
     }
 }
